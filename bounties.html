@@ -1,0 +1,160 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bounty | DeFi Rugz</title>
+  <link rel="icon" type="image/jpeg" href="logorugz.jpeg" />
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('home2.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Trebuchet MS', sans-serif;
+      color: white;
+    }
+
+    .top-buttons, .bottom-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .bottom-buttons {
+      margin-top: 500px;
+    }
+
+    .side-buttons {
+      position: absolute;
+      bottom: 60px;
+      left: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+    }
+
+    .button {
+      padding: 18px 36px;
+      background-color: #550606;
+      color: white;
+      font-size: 18px;
+      border: 2px solid #220202;
+      border-radius: 8px;
+      box-shadow: 3px 3px 8px black;
+      text-decoration: none;
+      text-align: center;
+      transition: 0.2s ease-in-out;
+    }
+
+    .button:hover {
+      background-color: #770808;
+      transform: scale(1.05);
+    }
+
+    #wallet-container {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+
+    #connectButton {
+      padding: 10px 20px;
+      background-color: #550606;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      box-shadow: 2px 2px 6px #000;
+      cursor: pointer;
+    }
+
+    #walletAddress {
+      margin-left: 15px;
+      font-weight: bold;
+    }
+
+    .content-section {
+      max-width: 800px;
+      margin: 100px auto;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #000;
+    }
+
+    .content-section h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #ffcc99;
+    }
+
+    .content-section p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Wallet Connect -->
+  <div id="wallet-container">
+    <button id="connectButton">Connect Wallet</button>
+    <span id="walletAddress"></span>
+  </div>
+
+  <!-- Top Navigation (excluding Bounty) -->
+  <div class="top-buttons">
+    <a href="stake.html" class="button">Staking</a>
+    <a href="vouch.html" class="button">Vouch</a>
+    <a href="slash.html" class="button">Slash</a>
+  </div>
+
+  <!-- Bottom Navigation (excluding Bounty) -->
+  <div class="bottom-buttons">
+    <a href="scanner.html" class="button">Scanner</a>
+    <a href="whitepaper.html" class="button">Whitepaper</a>
+    <a href="nfts.html" class="button">NFTs</a>
+    <a href="treasury.html" class="button">Treasury</a>
+  </div>
+
+  <!-- Side Buttons (only on homepage, optional here if needed) -->
+  <div class="side-buttons">
+    <a href="blog.html" class="button">Blog</a>
+    <a href="faq.html" class="button">FAQ</a>
+    <a href="about.html" class="button">About</a>
+  </div>
+
+  <!-- Page Content -->
+  <div class="content-section">
+    <h2>Bounty Board</h2>
+    <p>🕵️‍♂️ Spot a rug? 🧠 Use your brain, post evidence, and earn RUGZ.<br><br>
+    Verified reports are rewarded directly by the DAO.<br>
+    The more accurate you are, the higher your rep.</p>
+  </div>
+
+  <script>
+    const connectButton = document.getElementById('connectButton');
+    const walletAddress = document.getElementById('walletAddress');
+
+    connectButton.addEventListener('click', async () => {
+      if (window.ethereum) {
+        try {
+          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+          const address = accounts[0];
+          const shortAddress = `${address.substring(0, 6)}...${address.slice(-4)}`;
+          walletAddress.textContent = shortAddress;
+          connectButton.style.display = 'none';
+        } catch (err) {
+          console.error('User rejected request');
+        }
+      } else {
+        alert('MetaMask not detected. Please install MetaMask.');
+      }
+    });
+  </script>
+
+</body>
+</html>
