@@ -3,144 +3,128 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DeFi Rugz</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+  <script src="https://unpkg.com/@thirdweb-dev/wallets@latest"></script>
+  <script src="https://unpkg.com/@thirdweb-dev/sdk@latest"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: url('homepage1.png') no-repeat center center fixed;
-      background-size: cover;
+      background-image: url('homepage1.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-color: #000;
       font-family: Arial, sans-serif;
     }
 
-    .button {
-      background: #550606;
-      color: white;
-      border: 2px solid #2a0000;
-      padding: 16px 32px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 8px;
-      box-shadow: 3px 3px 10px #000;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.2s ease-in-out;
-      width: 80%;
-      max-width: 300px;
-    }
-
-    .button:hover {
-      background: #7a0b0b;
-    }
-
-    .row, .column {
+    .top-buttons, .bottom-buttons {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 20px;
-      margin: 20px 0;
+      gap: 16px;
+      margin: 20px;
     }
 
-    .column {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #connect-wallet {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background-color: #550606;
-      color: white;
-      border: 1px solid #2a0000;
-      padding: 12px 20px;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      z-index: 999;
-    }
-
-    #wallet-address {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #000;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 6px;
-      border: 1px solid #444;
-      display: none;
-      z-index: 999;
-    }
-
-    .container {
+    .side-buttons {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      justify-content: space-between;
       align-items: center;
-      padding: 20px 10px;
+      gap: 16px;
+    }
+
+    .nav-button {
+      background-color: #600000;
+      color: white;
+      font-weight: bold;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0px 0px 6px #300000;
+      border: none;
+      cursor: pointer;
+    }
+
+    .wallet-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
 
     @media (max-width: 768px) {
-      .button {
-        padding: 14px 24px;
-        font-size: 14px;
+      body {
+        background-size: contain;
       }
 
-      #connect-wallet, #wallet-address {
-        font-size: 12px;
-        padding: 8px 12px;
+      .top-buttons, .bottom-buttons, .side-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .wallet-button {
+        top: 10px;
+        right: 10px;
       }
     }
   </style>
 </head>
 <body>
-  <button id="connect-wallet">Connect Wallet</button>
-  <div id="wallet-address"></div>
 
-  <div class="container">
-    <div class="row">
-      <a href="vouch.html" class="button">VOUCH</a>
-      <a href="slash.html" class="button">SLASH</a>
-      <a href="treasury.html" class="button">TREASURY</a>
-    </div>
+  <!-- Connect Wallet Button -->
+  <div class="wallet-button">
+    <button id="connectWallet" class="nav-button">Connect Wallet</button>
+    <div id="walletAddress" style="color:white; margin-top: 5px; font-size: 12px;"></div>
+  </div>
 
-    <div class="column">
-      <a href="contact.html" class="button">CONTACT</a>
-      <a href="faq.html" class="button">FAQ</a>
-      <a href="blog.html" class="button">BLOG</a>
-      <a href="about.html" class="button">ABOUT</a>
-    </div>
+  <!-- Top Buttons -->
+  <div class="top-buttons">
+    <a href="stake.html" class="nav-button">VOUCH</a>
+    <a href="slash.html" class="nav-button">SLASH</a>
+    <a href="treasury.html" class="nav-button">TREASURY</a>
+  </div>
 
-    <div class="row">
-      <a href="scanner.html" class="button">SCANNER</a>
-      <a href="bounty.html" class="button">BOUNTY</a>
-      <a href="whitepaper.html" class="button">WHITEPAPER</a>
-      <a href="nfts.html" class="button">NFTS</a>
-    </div>
+  <!-- Side Buttons -->
+  <div class="side-buttons">
+    <a href="contact.html" class="nav-button">CONTACT</a>
+    <a href="faq.html" class="nav-button">FAQ</a>
+    <a href="blog.html" class="nav-button">BLOG</a>
+    <a href="about.html" class="nav-button">ABOUT</a>
+  </div>
+
+  <!-- Bottom Buttons -->
+  <div class="bottom-buttons">
+    <a href="scanner.html" class="nav-button">SCANNER</a>
+    <a href="bounties.html" class="nav-button">BOUNTY</a>
+    <a href="whitepaper.html" class="nav-button">WHITEPAPER</a>
   </div>
 
   <script>
-    const connectButton = document.getElementById("connect-wallet");
-    const walletAddressDisplay = document.getElementById("wallet-address");
-    let signer;
+    const connectButton = document.getElementById('connectWallet');
+    const walletAddress = document.getElementById('walletAddress');
 
     async function connectWallet() {
-      if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await provider.send("eth_requestAccounts", []);
-        signer = provider.getSigner();
-        const address = await signer.getAddress();
-        walletAddressDisplay.textContent = "Connected: " + address.slice(0, 6) + "..." + address.slice(-4);
-        walletAddressDisplay.style.display = "block";
-        connectButton.style.display = "none";
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+          const address = accounts[0];
+          const shortAddress = address.slice(0, 6) + '...' + address.slice(-4);
+          walletAddress.textContent = shortAddress;
+          connectButton.style.display = 'none';
+        } catch (error) {
+          console.error(error);
+        }
       } else {
-        alert("Please install MetaMask.");
+        alert('MetaMask not detected');
       }
     }
 
-    connectButton.addEventListener("click", connectWallet);
+    connectButton.addEventListener('click', connectWallet);
   </script>
 </body>
 </html>
-
