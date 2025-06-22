@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reputation NFTs</title>
+  <title>Rugz NFTs | DeFi Rugz</title>
   <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script src="https://sdk.vercel.thirdweb.com/wallets/dist/index.min.js"></script>
   <style>
@@ -82,15 +82,81 @@
       border: 1px solid #444;
       display: none;
     }
+
+    .nft-gallery {
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      margin-top: 150px;
+      flex-wrap: wrap;
+    }
+
+    .nft-card {
+      text-align: center;
+      color: white;
+    }
+
+    .nft-card img {
+      width: 250px;
+      height: auto;
+      border-radius: 8px;
+      border: 2px solid #550606;
+      box-shadow: 0 0 12px #000;
+    }
+
+    .nft-card p {
+      margin-top: 12px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .button-row-top,
+      .button-row-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      .side-buttons {
+        left: 10px;
+        bottom: 20px;
+        gap: 20px;
+      }
+
+      .button {
+        padding: 14px 28px;
+        font-size: 16px;
+      }
+
+      .nft-gallery {
+        margin-top: 100px;
+        gap: 40px;
+      }
+
+      .nft-card img {
+        width: 200px;
+      }
+
+      #connect-wallet,
+      #wallet-address {
+        top: 10px;
+        right: 10px;
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- Top Buttons -->
   <div class="button-row-top">
-    <a href="stake.html" class="button">STAKE</a>
     <a href="vouch.html" class="button">VOUCH</a>
     <a href="slash.html" class="button">SLASH</a>
+    <a href="treasury.html" class="button">TREASURY</a>
   </div>
 
   <!-- Bottom Buttons -->
@@ -98,7 +164,6 @@
     <a href="scanner.html" class="button">SCANNER</a>
     <a href="bounty.html" class="button">BOUNTY</a>
     <a href="whitepaper.html" class="button">WHITEPAPER</a>
-    <a href="dao.html" class="button">DAO</a>
   </div>
 
   <!-- Side Buttons -->
@@ -107,11 +172,24 @@
     <a href="faq.html" class="button">FAQ</a>
     <a href="blog.html" class="button">BLOG</a>
     <a href="about.html" class="button">ABOUT</a>
+    <a href="index.html" class="button">HOME</a>
   </div>
 
   <!-- Wallet Connect -->
   <button id="connect-wallet">Connect Wallet</button>
   <div id="wallet-address"></div>
+
+  <!-- NFT Gallery -->
+  <div class="nft-gallery">
+    <div class="nft-card">
+      <img src="nft.png" alt="Rugzslayer NFT" />
+      <p>Rugzslayer</p>
+    </div>
+    <div class="nft-card">
+      <img src="nft2.jpeg" alt="Rugzchamp NFT" />
+      <p>Rugzchamp</p>
+    </div>
+  </div>
 
   <script>
     const connectButton = document.getElementById("connect-wallet");

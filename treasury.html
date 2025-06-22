@@ -2,8 +2,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Treasury - DeFi Rugz</title>
+  <title>Treasury | DeFi Rugz</title>
   <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="https://sdk.vercel.thirdweb.com/wallets/dist/index.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -11,30 +12,30 @@
       background: url('home2.png') no-repeat center center;
       background-size: cover;
       font-family: Arial, sans-serif;
-      color: #fff;
-    }
-
-    .button-row-top, .button-row-bottom, .side-buttons {
-      display: flex;
-      gap: 30px;
     }
 
     .button-row-top {
+      display: flex;
       justify-content: center;
+      gap: 30px;
       padding-top: 30px;
     }
 
     .button-row-bottom {
+      display: flex;
       justify-content: center;
-      padding: 280px 0 60px 0; /* moved higher */
+      gap: 30px;
+      padding: 500px 0 60px 0;
     }
 
     .side-buttons {
       position: fixed;
       bottom: 60px;
       left: 30px;
+      display: flex;
       flex-direction: column;
       gap: 100px;
+      z-index: 10;
     }
 
     .button {
@@ -46,12 +47,14 @@
       font-weight: bold;
       border-radius: 8px;
       box-shadow: 3px 3px 10px #000;
+      transition: all 0.2s ease-in-out;
       text-decoration: none;
       text-align: center;
     }
 
     .button:hover {
       background: #7a0b0b;
+      color: #fff;
     }
 
     #connect-wallet {
@@ -59,10 +62,11 @@
       top: 20px;
       right: 20px;
       padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 6px;
       background-color: #550606;
       color: white;
       border: 1px solid #2a0000;
-      border-radius: 6px;
       cursor: pointer;
       z-index: 999;
     }
@@ -71,82 +75,104 @@
       position: fixed;
       top: 20px;
       right: 20px;
+      color: white;
+      background: #000;
       padding: 10px 15px;
       border-radius: 6px;
-      background: #000;
       border: 1px solid #444;
       display: none;
     }
 
-    .content {
+    .treasury-box {
+      max-width: 900px;
+      margin: 120px auto 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      color: white;
       text-align: center;
-      margin-top: 100px;
+      font-size: 20px;
+      border: 2px solid #550606;
+      box-shadow: 0 0 15px #000;
     }
 
-    .content h2 {
-      color: #ffcc00;
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
+    @media (max-width: 768px) {
+      .button-row-top,
+      .button-row-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
 
-    .treasury-info {
-      font-size: 18px;
-      color: #eee;
-      margin-top: 10px;
-      line-height: 1.6;
-    }
+      .side-buttons {
+        left: 10px;
+        bottom: 20px;
+        gap: 20px;
+      }
 
-    code {
-      background: #111;
-      padding: 5px 10px;
-      border-radius: 4px;
-      display: inline-block;
-      margin-top: 5px;
+      .button {
+        padding: 14px 28px;
+        font-size: 16px;
+      }
+
+      .treasury-box {
+        margin-top: 80px;
+        padding: 20px;
+        font-size: 18px;
+      }
+
+      #connect-wallet,
+      #wallet-address {
+        top: 10px;
+        right: 10px;
+        font-size: 14px;
+        padding: 8px 12px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Nav -->
+  <!-- Top Buttons -->
   <div class="button-row-top">
-    <a href="index.html" class="button">HOME</a>
     <a href="vouch.html" class="button">VOUCH</a>
     <a href="slash.html" class="button">SLASH</a>
-  </div>
-
-  <!-- Treasury Info -->
-  <div class="content">
-    <h2>DAO Treasury</h2>
-    <div class="treasury-info">
-      📦 Treasury Address:<br>
-      <code>0xF71deED11559586514330580CfE5072a9CB54F10</code><br><br>
-      💰 Track DAO funds, slashing rewards, staking fees & bounty payouts all through this verified wallet.
-    </div>
-  </div>
-
-  <!-- Bottom Nav -->
-  <div class="button-row-bottom">
     <a href="scanner.html" class="button">SCANNER</a>
+  </div>
+
+  <!-- Bottom Buttons -->
+  <div class="button-row-bottom">
     <a href="bounty.html" class="button">BOUNTY</a>
     <a href="whitepaper.html" class="button">WHITEPAPER</a>
     <a href="nfts.html" class="button">NFTS</a>
   </div>
 
-  <!-- Side Nav -->
+  <!-- Side Buttons -->
   <div class="side-buttons">
     <a href="contact.html" class="button">CONTACT</a>
     <a href="faq.html" class="button">FAQ</a>
     <a href="blog.html" class="button">BLOG</a>
     <a href="about.html" class="button">ABOUT</a>
+    <a href="index.html" class="button">HOME</a>
   </div>
 
-  <!-- Wallet -->
+  <!-- Wallet Connect -->
   <button id="connect-wallet">Connect Wallet</button>
   <div id="wallet-address"></div>
 
+  <!-- Treasury Info -->
+  <div class="treasury-box">
+    <p><strong>DAO Treasury Wallet:</strong></p>
+    <p>📬 <code>0xF71deED11559586514330580CfE5072a9CB54F10</code></p>
+    <p>This wallet receives staking fees, slashing penalties, and DAO bounties.</p>
+    <p>All transactions are transparent and verifiable on the Base chain.</p>
+  </div>
+
   <script>
     const connectButton = document.getElementById("connect-wallet");
-    const walletDisplay = document.getElementById("wallet-address");
+    const walletAddressDisplay = document.getElementById("wallet-address");
 
     async function connectWallet() {
       if (window.ethereum) {
@@ -155,11 +181,11 @@
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         const shortAddr = address.slice(0, 6) + "..." + address.slice(-4);
-        walletDisplay.textContent = "Connected: " + shortAddr;
-        walletDisplay.style.display = "block";
+        walletAddressDisplay.textContent = "Connected: " + shortAddr;
+        walletAddressDisplay.style.display = "block";
         connectButton.style.display = "none";
       } else {
-        alert("MetaMask or a Web3 wallet is required.");
+        alert("MetaMask or another Ethereum wallet is required.");
       }
     }
 

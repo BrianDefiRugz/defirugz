@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DAO Voting</title>
+  <title>DAO Voting | DeFi Rugz</title>
   <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script src="https://sdk.vercel.thirdweb.com/wallets/dist/index.min.js"></script>
   <style>
@@ -83,15 +82,53 @@
       border: 1px solid #444;
       display: none;
     }
+
+    .dao-section {
+      text-align: center;
+      margin-top: 120px;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .button-row-top,
+      .button-row-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      .side-buttons {
+        left: 10px;
+        bottom: 20px;
+        gap: 20px;
+      }
+
+      .button {
+        padding: 14px 28px;
+        font-size: 16px;
+      }
+
+      #connect-wallet,
+      #wallet-address {
+        top: 10px;
+        right: 10px;
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- Top Buttons -->
   <div class="button-row-top">
-    <a href="stake.html" class="button">STAKE</a>
     <a href="vouch.html" class="button">VOUCH</a>
     <a href="slash.html" class="button">SLASH</a>
+    <a href="treasury.html" class="button">TREASURY</a>
   </div>
 
   <!-- Bottom Buttons -->
@@ -108,11 +145,21 @@
     <a href="faq.html" class="button">FAQ</a>
     <a href="blog.html" class="button">BLOG</a>
     <a href="about.html" class="button">ABOUT</a>
+    <a href="index.html" class="button">HOME</a>
   </div>
 
   <!-- Wallet Connect -->
   <button id="connect-wallet">Connect Wallet</button>
   <div id="wallet-address"></div>
+
+  <!-- DAO Voting Area -->
+  <div class="dao-section">
+    DAO Voting Interface Coming Soon<br/>
+    Powered by Governor + Timelock<br/><br/>
+    ✅ Stake + Vote<br/>
+    ✅ Confirm Slash Events<br/>
+    ✅ Propose Upgrades
+  </div>
 
   <script>
     const connectButton = document.getElementById("connect-wallet");

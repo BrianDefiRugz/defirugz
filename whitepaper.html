@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Whitepaper - DeFi Rugz</title>
+  <title>Whitepaper | DeFi Rugz</title>
   <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script src="https://sdk.vercel.thirdweb.com/wallets/dist/index.min.js"></script>
   <style>
@@ -12,7 +12,6 @@
       background: url('home2.png') no-repeat center center;
       background-size: cover;
       font-family: Arial, sans-serif;
-      color: #fff;
     }
 
     .button-row-top {
@@ -26,7 +25,7 @@
       display: flex;
       justify-content: center;
       gap: 30px;
-      padding: 40px 0 0;
+      padding: 500px 0 60px 0;
     }
 
     .side-buttons {
@@ -55,6 +54,7 @@
 
     .button:hover {
       background: #7a0b0b;
+      color: #fff;
     }
 
     #connect-wallet {
@@ -83,23 +83,52 @@
       display: none;
     }
 
-    .content {
-      max-width: 900px;
-      margin: 60px auto;
-      background: rgba(0, 0, 0, 0.85);
-      padding: 40px;
+    .whitepaper-box {
+      max-width: 1000px;
+      margin: 120px auto 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px;
       border-radius: 10px;
+      color: white;
+      font-size: 18px;
       border: 2px solid #550606;
       box-shadow: 0 0 15px #000;
     }
 
-    h1, h2 {
-      color: #ff4444;
-    }
+    @media (max-width: 768px) {
+      .button-row-top,
+      .button-row-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
 
-    p {
-      line-height: 1.7em;
-      font-size: 16px;
+      .side-buttons {
+        left: 10px;
+        bottom: 20px;
+        gap: 20px;
+      }
+
+      .button {
+        padding: 14px 28px;
+        font-size: 16px;
+      }
+
+      .whitepaper-box {
+        margin-top: 80px;
+        padding: 20px;
+        font-size: 16px;
+      }
+
+      #connect-wallet,
+      #wallet-address {
+        top: 10px;
+        right: 10px;
+        font-size: 14px;
+        padding: 8px 12px;
+      }
     }
   </style>
 </head>
@@ -116,12 +145,15 @@
   <div class="button-row-bottom">
     <a href="scanner.html" class="button">SCANNER</a>
     <a href="bounty.html" class="button">BOUNTY</a>
-    <a href="whitepaper.html" class="button">WHITEPAPER</a>
     <a href="nfts.html" class="button">NFTS</a>
   </div>
 
   <!-- Side Buttons -->
   <div class="side-buttons">
+    <a href="contact.html" class="button">CONTACT</a>
+    <a href="faq.html" class="button">FAQ</a>
+    <a href="blog.html" class="button">BLOG</a>
+    <a href="about.html" class="button">ABOUT</a>
     <a href="index.html" class="button">HOME</a>
   </div>
 
@@ -130,32 +162,47 @@
   <div id="wallet-address"></div>
 
   <!-- Whitepaper Content -->
-  <div class="content">
-    <h1>DeFi Rugz Whitepaper</h1>
+  <div class="whitepaper-box">
+    <h2>DeFi Rugz Whitepaper</h2>
+    <p><strong>Mission:</strong> DeFi Rugz is a decentralized trust layer for Web3, created to protect users from scams and rug pulls by incentivizing honesty, enabling slashing, and promoting transparency.</p>
+    
+    <p><strong>Token:</strong> $RUGZ (Fixed Supply: 1B)</p>
+    <ul>
+      <li>Used for staking, slashing, DAO voting, and ecosystem rewards</li>
+      <li>40% allocated to early community incentives</li>
+    </ul>
 
-    <h2>Our Mission</h2>
-    <p>DeFi Rugz is a decentralized protocol dedicated to eliminating scams in the DeFi ecosystem. We aim to build a transparent, community-driven layer of trust using staking, vouching, DAO-based slashing, and NFT-based reputation scoring.</p>
+    <p><strong>Vouching & Staking:</strong></p>
+    <ul>
+      <li>Users stake $RUGZ to vouch for new projects</li>
+      <li>Bad actors get slashed; vouching wallets lose stake</li>
+    </ul>
 
-    <h2>Token Utility ($RUGZ)</h2>
-    <p>$RUGZ is the core utility token powering the ecosystem. It is used for staking, governance, slashing decisions, bounty rewards, and minting soulbound Reputation NFTs.</p>
+    <p><strong>Reputation NFTs:</strong></p>
+    <ul>
+      <li>ERC-1155 soulbound NFTs representing contributor trust level</li>
+      <li>Earned by helping uncover scams or verifying honest actors</li>
+    </ul>
 
-    <h2>Staking & Vouching</h2>
-    <p>Users can stake $RUGZ to vouch for new projects. If a vouched project rugs, the staker’s tokens are slashed. This ensures only trustworthy actors are promoted, creating accountability in the ecosystem.</p>
+    <p><strong>DAO & Treasury:</strong></p>
+    <ul>
+      <li>Community-governed DAO using OpenZeppelin contracts</li>
+      <li>Handles slashing, proposals, bounty allocation</li>
+    </ul>
 
-    <h2>DAO Governance</h2>
-    <p>The DAO governs the protocol. It votes on slashing decisions, bounty payouts, and treasury allocation. Only active $RUGZ stakers can vote.</p>
+    <p><strong>Rugz Watchdog:</strong></p>
+    <ul>
+      <li>AI & bounty-driven system to catch scammers early</li>
+      <li>Scores influencers and promotes on-chain evidence-based warnings</li>
+    </ul>
 
-    <h2>Reputation NFTs</h2>
-    <p>Users earn soulbound NFTs that represent their trust level in the ecosystem. These are earned through actions like accurate reporting, vouching, and slashing participation.</p>
+    <p><strong>Launch Strategy:</strong></p>
+    <ul>
+      <li>Deployed on Base chain for low fees and fast settlement</li>
+      <li>Front-end hosted on Vercel, fully open-source GitHub repo</li>
+    </ul>
 
-    <h2>Bounty Board</h2>
-    <p>Community members can earn $RUGZ by identifying scams and submitting evidence. Validated bounties are rewarded from the treasury via DAO vote.</p>
-
-    <h2>Transparency & Treasury</h2>
-    <p>All treasury actions are on-chain and DAO-governed. The treasury is funded by slashing penalties and emission fees.</p>
-
-    <h2>Launch Plan</h2>
-    <p>We are launching exclusively on Base with a fixed 1B $RUGZ supply, decaying emissions, and a capped DAO treasury. Initial contracts will include ERC-20, staking, NFT minting, and DAO governance.</p>
+    <p>Rugz isn’t just a token. It’s a movement. A decentralized force against fraud. We reward courage and honesty while punishing bad actors. Join us and be part of a smarter, safer, decentralized future.</p>
   </div>
 
   <script>

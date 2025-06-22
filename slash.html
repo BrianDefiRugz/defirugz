@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Slash - DeFi Rugz</title>
+  <title>DeFi Rugz - Slash</title>
   <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <style>
     body {
@@ -18,20 +19,11 @@
       display: flex;
       justify-content: center;
       gap: 30px;
-      margin-top: 40px;
+      padding-top: 30px;
     }
 
     .button-row-bottom {
-      margin-top: 250px;
-    }
-
-    .side-buttons {
-      position: fixed;
-      bottom: 60px;
-      left: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 100px;
+      padding: 20px 0 60px 0;
     }
 
     .button {
@@ -42,41 +34,27 @@
       font-size: 18px;
       font-weight: bold;
       border-radius: 8px;
-      box-shadow: 3px 3px 10px #000;
       text-decoration: none;
-      text-align: center;
+      box-shadow: 3px 3px 10px #000;
+      transition: 0.2s;
     }
 
     .button:hover {
       background: #7a0b0b;
     }
 
-    #slash-form {
-      margin: 100px auto 0 auto;
-      text-align: center;
-    }
-
-    #slash-input {
-      width: 400px;
-      padding: 10px;
-      font-size: 16px;
+    #connect-wallet {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      font-weight: bold;
       border-radius: 6px;
-    }
-
-    #submit-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 18px;
       background-color: #550606;
       color: white;
-      border: 2px solid #2a0000;
+      border: 1px solid #2a0000;
       cursor: pointer;
-      border-radius: 6px;
-    }
-
-    #slash-list {
-      margin-top: 40px;
-      text-align: center;
+      z-index: 999;
     }
 
     #wallet-address {
@@ -84,9 +62,57 @@
       top: 20px;
       right: 20px;
       background: #000;
+      color: white;
       padding: 10px 15px;
       border-radius: 6px;
-      border: 1px solid #444;
+      display: none;
+    }
+
+    .form-container {
+      max-width: 500px;
+      margin: 100px auto 0 auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border: 2px solid #550606;
+      border-radius: 10px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+    }
+
+    .form-container input, .form-container textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+    }
+
+    .form-container button {
+      background-color: #550606;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-weight: bold;
+      color: white;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .reports {
+      max-width: 600px;
+      margin: 40px auto;
+      background: rgba(0,0,0,0.5);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .report {
+      border-bottom: 1px solid #999;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
     }
   </style>
 </head>
@@ -99,19 +125,17 @@
     <a href="treasury.html" class="button">TREASURY</a>
   </div>
 
-  <!-- Slash Submit -->
-  <div id="slash-form">
-    <input type="text" id="slash-input" placeholder="Enter address to slash..." />
-    <br>
-    <button id="submit-btn">Submit Slash</button>
-    <div id="wallet-address"></div>
+  <!-- Slash Form -->
+  <div class="form-container">
+    <h2>Submit a Slash Report</h2>
+    <input type="text" id="suspect" placeholder="Suspect Address" />
+    <textarea id="reason" placeholder="Reason (min 6 characters)"></textarea>
+    <button onclick="submitReport()">Submit Slash</button>
+    <p id="status"></p>
   </div>
 
-  <!-- Slash List -->
-  <div id="slash-list">
-    <h2>Slashed Addresses:</h2>
-    <ul id="slashes"></ul>
-  </div>
+  <!-- Reports -->
+  <div class="reports" id="reports"></div>
 
   <!-- Bottom Buttons -->
   <div class="button-row-bottom">
@@ -121,64 +145,74 @@
     <a href="nfts.html" class="button">NFTS</a>
   </div>
 
-  <!-- Side Buttons -->
-  <div class="side-buttons">
-    <a href="contact.html" class="button">CONTACT</a>
-    <a href="faq.html" class="button">FAQ</a>
-    <a href="blog.html" class="button">BLOG</a>
-    <a href="about.html" class="button">ABOUT</a>
-  </div>
+  <!-- Wallet -->
+  <button id="connect-wallet">Connect Wallet</button>
+  <div id="wallet-address"></div>
 
-  <!-- JS Section -->
   <script>
+    const connectButton = document.getElementById("connect-wallet");
+    const walletAddressDisplay = document.getElementById("wallet-address");
+    let signer;
+    let contract;
+
     const contractAddress = "0x84Fa4D9e809990bB7C3e9b106315Ed18c816CA2D";
-    const contractABI = [
-      "function submitSlash(address badActor) public",
-      "function getAllSlashes() public view returns (address[])"
+    const abi = [
+      "function reportRug(address suspect, string memory reason) external",
+      "function getReportsCount() public view returns (uint256)",
+      "function getReport(uint256 index) public view returns (tuple(address reporter, address suspect, string reason, uint256 timestamp))"
     ];
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+    async function connectWallet() {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        signer = provider.getSigner();
+        const address = await signer.getAddress();
+        const shortAddr = address.slice(0, 6) + "..." + address.slice(-4);
+        walletAddressDisplay.textContent = "Connected: " + shortAddr;
+        walletAddressDisplay.style.display = "block";
+        connectButton.style.display = "none";
+        contract = new ethers.Contract(contractAddress, abi, signer);
+        loadReports();
+      } else {
+        alert("MetaMask or another Ethereum wallet is required.");
+      }
+    }
 
-    document.getElementById("submit-btn").onclick = async () => {
-      const address = document.getElementById("slash-input").value;
+    async function submitReport() {
+      const suspect = document.getElementById("suspect").value;
+      const reason = document.getElementById("reason").value;
+      const status = document.getElementById("status");
+      if (!signer || !contract) return alert("Please connect wallet first.");
+      if (reason.length < 6) return alert("Reason too short.");
       try {
-        const tx = await contract.submitSlash(address);
+        const tx = await contract.reportRug(suspect, reason);
+        status.textContent = "Submitting slash...";
         await tx.wait();
-        alert("Slash submitted!");
-        loadSlashes();
+        status.textContent = "Slash submitted successfully!";
+        loadReports();
       } catch (err) {
-        alert("Error submitting slash: " + err.message);
-      }
-    };
-
-    async function loadSlashes() {
-      try {
-        const addresses = await contract.getAllSlashes();
-        const list = document.getElementById("slashes");
-        list.innerHTML = "";
-        addresses.forEach(addr => {
-          const li = document.createElement("li");
-          li.textContent = addr;
-          list.appendChild(li);
-        });
-      } catch (err) {
-        console.error("Failed to load slashes:", err);
+        console.error(err);
+        status.textContent = "Error submitting slash.";
       }
     }
 
-    async function showWallet() {
-      const accounts = await provider.send("eth_requestAccounts", []);
-      const short = accounts[0].slice(0, 6) + "..." + accounts[0].slice(-4);
-      document.getElementById("wallet-address").innerText = "Connected: " + short;
+    async function loadReports() {
+      const container = document.getElementById("reports");
+      container.innerHTML = "<h3>Recent Slash Reports</h3>";
+      const count = await contract.getReportsCount();
+      for (let i = count - 1; i >= 0 && i >= count - 10; i--) {
+        const r = await contract.getReport(i);
+        container.innerHTML += `
+          <div class="report">
+            <strong>Suspect:</strong> ${r.suspect}<br/>
+            <strong>Reason:</strong> ${r.reason}<br/>
+            <small>Reported by ${r.reporter} at ${new Date(r.timestamp * 1000).toLocaleString()}</small>
+          </div>`;
+      }
     }
 
-    window.onload = () => {
-      showWallet();
-      loadSlashes();
-    };
+    connectButton.addEventListener("click", connectWallet);
   </script>
-
 </body>
 </html>

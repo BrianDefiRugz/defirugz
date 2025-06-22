@@ -3,157 +3,167 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bounty | DeFi Rugz</title>
-  <link rel="icon" type="image/jpeg" href="logorugz.jpeg" />
-  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="https://sdk.vercel.thirdweb.com/wallets/dist/index.min.js"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: url('home2.png') no-repeat center center fixed;
+      background: url('home2.png') no-repeat center center;
       background-size: cover;
-      font-family: 'Trebuchet MS', sans-serif;
-      color: white;
+      font-family: Arial, sans-serif;
     }
 
-    .top-buttons, .bottom-buttons {
+    .button-row-top {
       display: flex;
       justify-content: center;
-      gap: 40px;
-      margin-top: 30px;
+      gap: 30px;
+      padding-top: 30px;
     }
 
-    .bottom-buttons {
-      margin-top: 500px;
+    .button-row-bottom {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 500px 0 60px 0;
     }
 
     .side-buttons {
-      position: absolute;
+      position: fixed;
       bottom: 60px;
       left: 30px;
       display: flex;
       flex-direction: column;
-      gap: 80px;
+      gap: 100px;
+      z-index: 10;
     }
 
     .button {
-      padding: 18px 36px;
-      background-color: #550606;
-      color: white;
+      background: #550606;
+      color: #fff;
+      border: 2px solid #2a0000;
+      padding: 20px 36px;
       font-size: 18px;
-      border: 2px solid #220202;
+      font-weight: bold;
       border-radius: 8px;
-      box-shadow: 3px 3px 8px black;
+      box-shadow: 3px 3px 10px #000;
+      transition: all 0.2s ease-in-out;
       text-decoration: none;
       text-align: center;
-      transition: 0.2s ease-in-out;
     }
 
     .button:hover {
-      background-color: #770808;
-      transform: scale(1.05);
+      background: #7a0b0b;
+      color: #fff;
     }
 
-    #wallet-container {
-      position: absolute;
-      top: 10px;
+    #connect-wallet {
+      position: fixed;
+      top: 20px;
       right: 20px;
-    }
-
-    #connectButton {
-      padding: 10px 20px;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 6px;
       background-color: #550606;
       color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      box-shadow: 2px 2px 6px #000;
+      border: 1px solid #2a0000;
       cursor: pointer;
+      z-index: 999;
     }
 
-    #walletAddress {
-      margin-left: 15px;
-      font-weight: bold;
+    #wallet-address {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      color: white;
+      background: #000;
+      padding: 10px 15px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      display: none;
     }
 
-    .content-section {
-      max-width: 800px;
-      margin: 100px auto;
-      text-align: center;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #000;
-    }
+    @media (max-width: 768px) {
+      .button-row-top,
+      .button-row-bottom {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
 
-    .content-section h2 {
-      margin-bottom: 20px;
-      font-size: 28px;
-      color: #ffcc99;
-    }
+      .side-buttons {
+        left: 10px;
+        bottom: 20px;
+        gap: 20px;
+      }
 
-    .content-section p {
-      font-size: 18px;
-      line-height: 1.6;
+      .button {
+        padding: 14px 28px;
+        font-size: 16px;
+      }
+
+      #connect-wallet,
+      #wallet-address {
+        top: 10px;
+        right: 10px;
+        font-size: 14px;
+        padding: 8px 12px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Wallet Connect -->
-  <div id="wallet-container">
-    <button id="connectButton">Connect Wallet</button>
-    <span id="walletAddress"></span>
+  <!-- Top Buttons -->
+  <div class="button-row-top">
+    <a href="vouch.html" class="button">VOUCH</a>
+    <a href="slash.html" class="button">SLASH</a>
+    <a href="treasury.html" class="button">TREASURY</a>
   </div>
 
-  <!-- Top Navigation (excluding Bounty) -->
-  <div class="top-buttons">
-    <a href="stake.html" class="button">Staking</a>
-    <a href="vouch.html" class="button">Vouch</a>
-    <a href="slash.html" class="button">Slash</a>
+  <!-- Bottom Buttons -->
+  <div class="button-row-bottom">
+    <a href="scanner.html" class="button">SCANNER</a>
+    <!-- BOUNTY button hidden on bounty.html -->
+    <a href="whitepaper.html" class="button">WHITEPAPER</a>
+    <a href="nfts.html" class="button">NFTS</a>
   </div>
 
-  <!-- Bottom Navigation (excluding Bounty) -->
-  <div class="bottom-buttons">
-    <a href="scanner.html" class="button">Scanner</a>
-    <a href="whitepaper.html" class="button">Whitepaper</a>
-    <a href="nfts.html" class="button">NFTs</a>
-    <a href="treasury.html" class="button">Treasury</a>
-  </div>
-
-  <!-- Side Buttons (only on homepage, optional here if needed) -->
+  <!-- Side Buttons -->
   <div class="side-buttons">
-    <a href="blog.html" class="button">Blog</a>
+    <a href="contact.html" class="button">CONTACT</a>
     <a href="faq.html" class="button">FAQ</a>
-    <a href="about.html" class="button">About</a>
+    <a href="blog.html" class="button">BLOG</a>
+    <a href="about.html" class="button">ABOUT</a>
+    <a href="index.html" class="button">HOME</a>
   </div>
 
-  <!-- Page Content -->
-  <div class="content-section">
-    <h2>Bounty Board</h2>
-    <p>🕵️‍♂️ Spot a rug? 🧠 Use your brain, post evidence, and earn RUGZ.<br><br>
-    Verified reports are rewarded directly by the DAO.<br>
-    The more accurate you are, the higher your rep.</p>
-  </div>
+  <!-- Wallet Connect -->
+  <button id="connect-wallet">Connect Wallet</button>
+  <div id="wallet-address"></div>
 
   <script>
-    const connectButton = document.getElementById('connectButton');
-    const walletAddress = document.getElementById('walletAddress');
+    const connectButton = document.getElementById("connect-wallet");
+    const walletAddressDisplay = document.getElementById("wallet-address");
 
-    connectButton.addEventListener('click', async () => {
+    async function connectWallet() {
       if (window.ethereum) {
-        try {
-          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-          const address = accounts[0];
-          const shortAddress = `${address.substring(0, 6)}...${address.slice(-4)}`;
-          walletAddress.textContent = shortAddress;
-          connectButton.style.display = 'none';
-        } catch (err) {
-          console.error('User rejected request');
-        }
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        const shortAddr = address.slice(0, 6) + "..." + address.slice(-4);
+        walletAddressDisplay.textContent = "Connected: " + shortAddr;
+        walletAddressDisplay.style.display = "block";
+        connectButton.style.display = "none";
       } else {
-        alert('MetaMask not detected. Please install MetaMask.');
+        alert("MetaMask or another Ethereum wallet is required.");
       }
-    });
+    }
+
+    connectButton.addEventListener("click", connectWallet);
   </script>
 
 </body>
