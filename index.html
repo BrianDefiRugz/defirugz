@@ -3,70 +3,56 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DeFi Rugz</title>
-  <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  <script src="https://sdk.vercel.thirdweb.com/wallets/dist/index.min.js"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: url('homepage1.png') no-repeat center center;
+      background: url('homepage1.png') no-repeat center center fixed;
       background-size: cover;
       font-family: Arial, sans-serif;
     }
 
-    .button-row-top {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding-top: 30px;
-    }
-
-    .button-row-bottom {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 500px 0 60px 0;
-    }
-
-    .side-buttons {
-      position: fixed;
-      bottom: 60px;
-      left: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 100px;
-      z-index: 10;
-    }
-
     .button {
       background: #550606;
-      color: #fff;
+      color: white;
       border: 2px solid #2a0000;
-      padding: 20px 36px;
-      font-size: 18px;
+      padding: 16px 32px;
+      font-size: 16px;
       font-weight: bold;
       border-radius: 8px;
       box-shadow: 3px 3px 10px #000;
-      transition: all 0.2s ease-in-out;
       text-decoration: none;
       text-align: center;
+      transition: all 0.2s ease-in-out;
     }
 
     .button:hover {
       background: #7a0b0b;
-      color: #fff;
+    }
+
+    .button-row, .side-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .side-buttons {
+      flex-direction: column;
+      align-items: center;
     }
 
     #connect-wallet {
       position: fixed;
       top: 20px;
       right: 20px;
-      padding: 12px 20px;
-      font-weight: bold;
-      border-radius: 6px;
       background-color: #550606;
       color: white;
       border: 1px solid #2a0000;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 6px;
       cursor: pointer;
       z-index: 999;
     }
@@ -75,65 +61,87 @@
       position: fixed;
       top: 20px;
       right: 20px;
-      color: white;
       background: #000;
+      color: white;
       padding: 10px 15px;
       border-radius: 6px;
       border: 1px solid #444;
       display: none;
+      z-index: 999;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .button {
+        padding: 12px 24px;
+        font-size: 14px;
+      }
+
+      #connect-wallet, #wallet-address {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+
+      .button-row, .side-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- Top Buttons -->
-  <div class="button-row-top">
-    <a href="vouch.html" class="button">VOUCH</a>
-    <a href="slash.html" class="button">SLASH</a>
-    <a href="treasury.html" class="button">TREASURY</a>
-  </div>
-
-  <!-- Bottom Buttons -->
-  <div class="button-row-bottom">
-    <a href="scanner.html" class="button">SCANNER</a>
-    <a href="bounty.html" class="button">BOUNTY</a>
-    <a href="whitepaper.html" class="button">WHITEPAPER</a>
-    <a href="nfts.html" class="button">NFTS</a>
-  </div>
-
-  <!-- Side Buttons -->
-  <div class="side-buttons">
-    <a href="contact.html" class="button">CONTACT</a>
-    <a href="faq.html" class="button">FAQ</a>
-    <a href="blog.html" class="button">BLOG</a>
-    <a href="about.html" class="button">ABOUT</a>
-  </div>
-
-  <!-- Wallet Connect -->
   <button id="connect-wallet">Connect Wallet</button>
   <div id="wallet-address"></div>
+
+  <div class="container">
+    <div class="button-row">
+      <a href="vouch.html" class="button">VOUCH</a>
+      <a href="slash.html" class="button">SLASH</a>
+      <a href="treasury.html" class="button">TREASURY</a>
+    </div>
+
+    <div class="side-buttons">
+      <a href="contact.html" class="button">CONTACT</a>
+      <a href="faq.html" class="button">FAQ</a>
+      <a href="blog.html" class="button">BLOG</a>
+      <a href="about.html" class="button">ABOUT</a>
+    </div>
+
+    <div class="button-row">
+      <a href="scanner.html" class="button">SCANNER</a>
+      <a href="bounty.html" class="button">BOUNTY</a>
+      <a href="whitepaper.html" class="button">WHITEPAPER</a>
+      <a href="nfts.html" class="button">NFTS</a>
+    </div>
+  </div>
 
   <script>
     const connectButton = document.getElementById("connect-wallet");
     const walletAddressDisplay = document.getElementById("wallet-address");
+    let signer;
 
     async function connectWallet() {
       if (window.ethereum) {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
+        signer = provider.getSigner();
         const address = await signer.getAddress();
-        const shortAddr = address.slice(0, 6) + "..." + address.slice(-4);
-        walletAddressDisplay.textContent = "Connected: " + shortAddr;
+        walletAddressDisplay.textContent = "Connected: " + address.slice(0, 6) + "..." + address.slice(-4);
         walletAddressDisplay.style.display = "block";
         connectButton.style.display = "none";
       } else {
-        alert("MetaMask or another Ethereum wallet is required.");
+        alert("Please install MetaMask.");
       }
     }
 
     connectButton.addEventListener("click", connectWallet);
   </script>
-
 </body>
 </html>
