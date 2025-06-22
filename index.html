@@ -24,21 +24,23 @@
       text-decoration: none;
       text-align: center;
       transition: all 0.2s ease-in-out;
+      width: 80%;
+      max-width: 300px;
     }
 
     .button:hover {
       background: #7a0b0b;
     }
 
-    .button-row, .side-buttons {
+    .row, .column {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 20px;
       margin: 20px 0;
     }
 
-    .side-buttons {
+    .column {
       flex-direction: column;
       align-items: center;
     }
@@ -75,23 +77,19 @@
       flex-direction: column;
       min-height: 100vh;
       justify-content: space-between;
-      padding: 20px;
+      align-items: center;
+      padding: 20px 10px;
     }
 
     @media (max-width: 768px) {
       .button {
-        padding: 12px 24px;
+        padding: 14px 24px;
         font-size: 14px;
       }
 
       #connect-wallet, #wallet-address {
         font-size: 12px;
         padding: 8px 12px;
-      }
-
-      .button-row, .side-buttons {
-        flex-direction: column;
-        gap: 15px;
       }
     }
   </style>
@@ -101,20 +99,20 @@
   <div id="wallet-address"></div>
 
   <div class="container">
-    <div class="button-row">
+    <div class="row">
       <a href="vouch.html" class="button">VOUCH</a>
       <a href="slash.html" class="button">SLASH</a>
       <a href="treasury.html" class="button">TREASURY</a>
     </div>
 
-    <div class="side-buttons">
+    <div class="column">
       <a href="contact.html" class="button">CONTACT</a>
       <a href="faq.html" class="button">FAQ</a>
       <a href="blog.html" class="button">BLOG</a>
       <a href="about.html" class="button">ABOUT</a>
     </div>
 
-    <div class="button-row">
+    <div class="row">
       <a href="scanner.html" class="button">SCANNER</a>
       <a href="bounty.html" class="button">BOUNTY</a>
       <a href="whitepaper.html" class="button">WHITEPAPER</a>
@@ -145,3 +143,4 @@
   </script>
 </body>
 </html>
+
