@@ -1,46 +1,58 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DeFi Rugz - Slash</title>
+  <title>Slash | DeFi Rugz</title>
   <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: url('home2.png') no-repeat center center;
+      background: url('home2.png') no-repeat center center fixed;
       background-size: cover;
       font-family: Arial, sans-serif;
-      color: white;
-    }
-
-    .button-row-top, .button-row-bottom {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding-top: 30px;
-    }
-
-    .button-row-bottom {
-      padding: 20px 0 60px 0;
     }
 
     .button {
       background: #550606;
-      color: #fff;
+      color: white;
       border: 2px solid #2a0000;
-      padding: 20px 36px;
-      font-size: 18px;
+      padding: 16px 32px;
+      font-size: 16px;
       font-weight: bold;
       border-radius: 8px;
-      text-decoration: none;
       box-shadow: 3px 3px 10px #000;
-      transition: 0.2s;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.2s ease-in-out;
     }
 
     .button:hover {
       background: #7a0b0b;
+    }
+
+    .button-row-top, .button-row-bottom, .side-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .button-row-top {
+      margin-top: 30px;
+    }
+
+    .button-row-bottom {
+      margin: 100px 0 40px 0;
+    }
+
+    .side-buttons {
+      position: fixed;
+      top: 120px;
+      left: 10px;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 99;
     }
 
     #connect-wallet {
@@ -48,11 +60,11 @@
       top: 20px;
       right: 20px;
       padding: 12px 20px;
-      font-weight: bold;
-      border-radius: 6px;
       background-color: #550606;
       color: white;
       border: 1px solid #2a0000;
+      border-radius: 6px;
+      font-weight: bold;
       cursor: pointer;
       z-index: 999;
     }
@@ -65,79 +77,102 @@
       color: white;
       padding: 10px 15px;
       border-radius: 6px;
+      border: 1px solid #444;
       display: none;
+      z-index: 999;
     }
 
-    .form-container {
+    form {
       max-width: 500px;
-      margin: 100px auto 0 auto;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px;
+      margin: 60px auto;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 25px;
+      border-radius: 10px;
       border: 2px solid #550606;
-      border-radius: 10px;
     }
 
-    .form-container h2 {
-      text-align: center;
-    }
-
-    .form-container input, .form-container textarea {
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 16px;
-    }
-
-    .form-container button {
-      background-color: #550606;
-      border: none;
-      padding: 12px;
-      width: 100%;
-      font-weight: bold;
+    label {
       color: white;
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
       border-radius: 6px;
-      font-size: 16px;
+      border: 1px solid #aaa;
     }
 
-    .reports {
-      max-width: 600px;
-      margin: 40px auto;
-      background: rgba(0,0,0,0.5);
-      padding: 20px;
-      border-radius: 10px;
+    #status {
+      text-align: center;
+      margin-top: 20px;
+      color: #fff;
+      font-weight: bold;
     }
 
-    .report {
-      border-bottom: 1px solid #999;
-      margin-bottom: 10px;
-      padding-bottom: 10px;
+    @media (max-width: 768px) {
+      .button {
+        padding: 14px 20px;
+        font-size: 14px;
+      }
+
+      .side-buttons {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+
+      .button-row-top, .button-row-bottom {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .button-row-bottom {
+        margin-bottom: 80px;
+      }
+
+      form {
+        margin: 40px 20px;
+      }
+
+      #connect-wallet, #wallet-address {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Buttons -->
   <div class="button-row-top">
-    <a href="index.html" class="button">HOME</a>
     <a href="vouch.html" class="button">VOUCH</a>
     <a href="treasury.html" class="button">TREASURY</a>
   </div>
 
-  <!-- Slash Form -->
-  <div class="form-container">
-    <h2>Submit a Slash Report</h2>
-    <input type="text" id="suspect" placeholder="Suspect Address" />
-    <textarea id="reason" placeholder="Reason (min 6 characters)"></textarea>
-    <button onclick="submitReport()">Submit Slash</button>
-    <p id="status"></p>
+  <div class="side-buttons">
+    <a href="contact.html" class="button">CONTACT</a>
+    <a href="faq.html" class="button">FAQ</a>
+    <a href="blog.html" class="button">BLOG</a>
+    <a href="about.html" class="button">ABOUT</a>
   </div>
 
-  <!-- Reports -->
-  <div class="reports" id="reports"></div>
+  <form id="slashForm">
+    <h2 style="color:white; text-align:center;">Submit a Slash Report</h2>
+    <label for="suspect">Suspect Wallet Address</label>
+    <input type="text" id="suspect" required />
 
-  <!-- Bottom Buttons -->
+    <label for="reason">Reason</label>
+    <textarea id="reason" rows="4" required></textarea>
+
+    <button type="submit" class="button" style="margin-top: 20px;">Submit Slash</button>
+    <div id="status"></div>
+  </form>
+
   <div class="button-row-bottom">
     <a href="scanner.html" class="button">SCANNER</a>
     <a href="bounty.html" class="button">BOUNTY</a>
@@ -145,7 +180,6 @@
     <a href="nfts.html" class="button">NFTS</a>
   </div>
 
-  <!-- Wallet -->
   <button id="connect-wallet">Connect Wallet</button>
   <div id="wallet-address"></div>
 
@@ -153,14 +187,6 @@
     const connectButton = document.getElementById("connect-wallet");
     const walletAddressDisplay = document.getElementById("wallet-address");
     let signer;
-    let contract;
-
-    const contractAddress = "0x84Fa4D9e809990bB7C3e9b106315Ed18c816CA2D";
-    const abi = [
-      "function reportRug(address suspect, string memory reason) external",
-      "function getReportsCount() public view returns (uint256)",
-      "function getReport(uint256 index) public view returns (tuple(address reporter, address suspect, string reason, uint256 timestamp))"
-    ];
 
     async function connectWallet() {
       if (window.ethereum) {
@@ -168,51 +194,46 @@
         await provider.send("eth_requestAccounts", []);
         signer = provider.getSigner();
         const address = await signer.getAddress();
-        const shortAddr = address.slice(0, 6) + "..." + address.slice(-4);
-        walletAddressDisplay.textContent = "Connected: " + shortAddr;
+        walletAddressDisplay.textContent = "Connected: " + address.slice(0, 6) + "..." + address.slice(-4);
         walletAddressDisplay.style.display = "block";
         connectButton.style.display = "none";
-        contract = new ethers.Contract(contractAddress, abi, signer);
-        loadReports();
       } else {
-        alert("MetaMask or another Ethereum wallet is required.");
-      }
-    }
-
-    async function submitReport() {
-      const suspect = document.getElementById("suspect").value;
-      const reason = document.getElementById("reason").value;
-      const status = document.getElementById("status");
-      if (!signer || !contract) return alert("Please connect wallet first.");
-      if (reason.length < 6) return alert("Reason too short.");
-      try {
-        const tx = await contract.reportRug(suspect, reason);
-        status.textContent = "Submitting slash...";
-        await tx.wait();
-        status.textContent = "Slash submitted successfully!";
-        loadReports();
-      } catch (err) {
-        console.error(err);
-        status.textContent = "Error submitting slash.";
-      }
-    }
-
-    async function loadReports() {
-      const container = document.getElementById("reports");
-      container.innerHTML = "<h3>Recent Slash Reports</h3>";
-      const count = await contract.getReportsCount();
-      for (let i = count - 1; i >= 0 && i >= count - 10; i--) {
-        const r = await contract.getReport(i);
-        container.innerHTML += `
-          <div class="report">
-            <strong>Suspect:</strong> ${r.suspect}<br/>
-            <strong>Reason:</strong> ${r.reason}<br/>
-            <small>Reported by ${r.reporter} at ${new Date(r.timestamp * 1000).toLocaleString()}</small>
-          </div>`;
+        alert("Please install MetaMask.");
       }
     }
 
     connectButton.addEventListener("click", connectWallet);
+
+    const contractAddress = "0x84Fa4D9e809990bB7C3e9b106315Ed18c816CA2D";
+    const abi = [
+      {
+        "inputs": [
+          { "internalType": "address", "name": "suspect", "type": "address" },
+          { "internalType": "string", "name": "reason", "type": "string" }
+        ],
+        "name": "reportRug",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ];
+
+    document.getElementById("slashForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const status = document.getElementById("status");
+      const suspect = document.getElementById("suspect").value;
+      const reason = document.getElementById("reason").value;
+
+      try {
+        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const tx = await contract.reportRug(suspect, reason);
+        status.innerText = "Submitted! Waiting for confirmation...";
+        await tx.wait();
+        status.innerText = "Success! Slash report submitted.";
+      } catch (err) {
+        status.innerText = "Error: " + err.message;
+      }
+    });
   </script>
 </body>
 </html>
